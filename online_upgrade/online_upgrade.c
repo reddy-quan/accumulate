@@ -21,7 +21,7 @@ int progress_func(char *progress_data,
 					double ultotal,
 					double ulnow)
 {
-  printf("%s %.4gK of %.4gK (%3.2g %%)\n", progress_data, d/1024, t/1024, d*100.0/t);
+  printf("%s %.2fK of %.2fK (%.2f %%)\n", progress_data, d/1024, t/1024, d*100.0/t);
   return 0;
 }
 
