@@ -52,8 +52,8 @@ int main(int argc,char **argv)
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 	
-	//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_write_func);
-	//curl_easy_setopt(curl, CURLOPT_READFUNCTION, my_read_func);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_write_func);
+	curl_easy_setopt(curl, CURLOPT_READFUNCTION, my_read_func);
 	curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0/*FALSE*/);
 	curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_func);
 	curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, progress_data);
