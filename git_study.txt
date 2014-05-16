@@ -1,0 +1,4 @@
+avoid every time "git push" input user name and passwd:
+git config --global credential.helper store
+
+
