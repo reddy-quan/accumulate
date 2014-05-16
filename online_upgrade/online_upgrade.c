@@ -25,14 +25,15 @@ int progress_func(char *progress_data,
   return 0;
 }
 
-int main(int argc,char **argv) {
+int main(int argc,char **argv) 
+{
 	CURL *curl;
 	CURLcode result;
 	char *progress_data = "-> ";
 	curl=curl_easy_init();
 	if(!curl) {
 		return -1;
-    }
+	}
 	char *url;
 	char *auth="bam:bam";
 	if(argc > 1) {
@@ -40,7 +41,7 @@ int main(int argc,char **argv) {
 	} else {
 		url="ftp://192.168.0.110/1.txt";
 	}
-	curl_easy_setopt(curl,CURLOPT_URL,url);
+	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_USERPWD, auth);
  
 	FILE *fp=fopen("/result","w+");
@@ -48,8 +49,8 @@ int main(int argc,char **argv) {
 		perror("fopen");
 		return -2;
 	}
-	curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
-	curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 	
 	//curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_write_func);
 	//curl_easy_setopt(curl, CURLOPT_READFUNCTION, my_read_func);
