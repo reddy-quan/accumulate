@@ -4,10 +4,14 @@ PROG=ou
 
 CFLAGS += -g -Wall
 
+#curl
 CFLAGS += -I../../build_curl-7.36.0/_install/include
 LDFLAGS += -L../../build_curl-7.36.0/_install/lib
+#openssl
+CFLAGS += -I../../openssl-1.0.1e/_install/include
+LDFLAGS += -L../../openssl-1.0.1e/_install/lib
 
-LDFLAGS += -lcurl
+LDFLAGS += -lcurl -lssl -lcrypto
 
 FILES = online_upgrade.c
 
