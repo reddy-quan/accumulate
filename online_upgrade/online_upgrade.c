@@ -30,6 +30,7 @@ int main(int argc,char **argv)
 	CURL *curl;
 	CURLcode result;
 	char *progress_data = "-> ";
+	char err_str[CURL_ERROR_SIZE ] = {0};
 	curl=curl_easy_init();
 	if(!curl) {
 		return -1;
@@ -53,6 +54,7 @@ int main(int argc,char **argv)
 	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 15);
+	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, err_str);
 	
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_write_func);
 	curl_easy_setopt(curl, CURLOPT_READFUNCTION, my_read_func);
@@ -62,7 +64,7 @@ int main(int argc,char **argv)
 	
 	result=curl_easy_perform(curl);
 	if (CURLE_OK != result) {
-	    printf("Error happened, errno is: %d\n", result);
+	    printf("Error %d: %s\n", result, err_str);
 	}
 	curl_easy_cleanup(curl);
 	fclose(fp);
