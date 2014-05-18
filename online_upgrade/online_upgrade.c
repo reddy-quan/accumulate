@@ -24,6 +24,20 @@ int progress_func(char *progress_data,
 	printf("%s %.2fK of %.2fK (%.2f %%)\n", progress_data, d/1024, t/1024, d*100.0/t);
 	return 0;
 }
+static char* get_file(const char *url)
+{
+	char *file = strrchr(url, '/');
+	if (file) {
+		file++;
+		printf("Will download file as: %s\n", file);
+		return file;
+	}
+	else {
+		printf("error get file name\n");
+		exit(-1);
+	}
+	return NULL;
+}
 
 int main(int argc,char **argv) 
 {
@@ -41,11 +55,12 @@ int main(int argc,char **argv)
 		url=argv[1];
 	} else {
 		url="ftp://192.168.0.110/1.txt";
+		printf("Warning: use default download path %s\n", url);
 	}
 	curl_easy_setopt(curl, CURLOPT_URL, url);
 	curl_easy_setopt(curl, CURLOPT_USERPWD, auth);
- 
-	FILE *fp=fopen("/result","w+");
+
+	FILE *fp=fopen(get_file(url), "w+");
 	if(!fp) {
 		perror("fopen");
 		return -2;
