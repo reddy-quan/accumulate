@@ -61,6 +61,9 @@ int main(int argc,char **argv)
 	curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, progress_data);
 	
 	result=curl_easy_perform(curl);
+	if (CURLE_OK != result) {
+	    printf("Error happened, errno is: %d\n", result);
+	}
 	curl_easy_cleanup(curl);
 	fclose(fp);
 	
