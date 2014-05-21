@@ -8,7 +8,7 @@ PR = "r1"
 
 SRC_URI = "file://${WORKSPACE}/arccra/application/apps/online_upgrade"
 
-DEPENDS = arccra-common
+DEPENDS = arccra-common curl
 #RDEPENDS = qmi-framework
 
 S = "${WORKDIR}/online_upgrade"
