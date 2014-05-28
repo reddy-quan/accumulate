@@ -2,3 +2,14 @@ avoid every time "git push" input user name and passwd:
 git config --global credential.helper store
 
 
+回退代码：
+git reset HEAD~1 #主要用于本地仓库
+
+git revert
+
+
+
+配置项改进思路：
+
+不在加载模块时打开文件，而是在真正读写时打开，这样就可以将其编译进内核而不是模块了！
+
