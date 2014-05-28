@@ -3,9 +3,12 @@ git config --global credential.helper store
 
 
 回退代码：
+<<<<<<< HEAD
 git reset HEAD~1 #主要用于本地仓库
 
 git revert
+=======
+>>>>>>> 0cd8082192f710baeec69eeecbf31ba39c9fdcfd
 
 
 
