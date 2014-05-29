@@ -1,0 +1,22 @@
+1、
+make menuconfig配置
+
+2、内核配置文件指定：
+需要选择arm/configs目录下的_defconfig前面的那个名字！
+即：
+Kernel->Defconfig name 指定为s3c2410
+
+3、特别注意：
+bootloader编译时报错：
+uboot No rule to make target `xxx_config'
+网上找到的解决方法：
+这条我猜测是读取boards.cfg文件中的${2}的信息，而我们传递的第二个参数是smdk2410，所以就是读取boards.cfg文件中的smdk2410的信息，如果不存在smdk2410的信息的话，就打印出一条语句：make: *** No rule to make target \`$2_config'. Stop." >&2并退出。
+从boards.cfg读出的信息为：
+smdk2410 arm arm920t - samsung s3c24x0
+即：
+Bootloaders->U-Boot board name指定为smdk2410
+
+4、
+make
+
+Enjoy!
