@@ -20,3 +20,9 @@ Bootloaders->U-Boot board name指定为smdk2410
 make
 
 Enjoy!
+
+重编[test]模块：
+make test-dirclean
+或者删除此模块在out/build目录下生成的目录
+
+
