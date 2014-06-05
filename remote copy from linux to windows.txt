@@ -1,0 +1,34 @@
+mount挂载Windows共享目录
+
+投稿者：admin 发表于：2011-06-30 　 点击：3,091
+mount -t cifs -o username=用户名,password=密码 //IP地址/共享目录 /mnt/本地创建的目录 
+
+解释：
+cifs是Common Internet File System，通用internet文件系统 ，简单来说就是用来通过网络进行文件的读写、共享等功能。
+
+
+在shell脚本中需要用root用的来执行指令：
+echo "password" | sudo -S netstat -tlnp        
+The -S (stdin) option causes sudo to read the password from the standard input instead of the terminal device.
+#此方法经过验证可以！
+
+
+如何在bash脚本中执行sudo时自动输入用户密码？
+#此方法经过我测试不行！！！
+sudo make install<<EOF
+your-password
+EOF
+
+
+貌似有个方法是使用expect ------这个需要安装！！！
+这个脚本搞定了pacman下的自动更新：
+
+#!/usr/bin/expect
+set timeout 60
+spawn sudo pacman -Syu
+expect "Password:"
+send "fei\r"
+set timeout 60
+expect "Proceed with installation?"
+send "Y\r"
+interact
