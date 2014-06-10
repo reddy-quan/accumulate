@@ -1,5 +1,5 @@
 cutting:
 make persistimage
 
-
+choosecombo Device release xxx
 

@@ -36,4 +36,14 @@ cscope -Rbq
 
 
 然后，要在用的时候需要手动加载：
-cs add cscope.out
+:cs add cscope.out
+
+
+针对特定文件：
+#!/bin/sh
+
+find . -name "*.h" -o -name "*.c" -o -name "*.cc" -name "*.s" -o -name "*.c" -name "*.S" -o -name "*.c"> cscope.files
+cscope -bkq -i cscope.files
+ctags -R
+
+
