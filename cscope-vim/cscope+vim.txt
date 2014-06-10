@@ -10,4 +10,6 @@ cscope -Rbq
 2.
 :cs show #查看状态
 3.
-:cs f g timer_tick
+:cs f g timer_tick #查找定义
+:cs f t timer_tick #查找所有引用
+
