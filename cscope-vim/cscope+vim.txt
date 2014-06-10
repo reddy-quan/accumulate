@@ -1,4 +1,4 @@
-(4) 为了方便地使用cscope，我们还需要下载cscope的键盘映射设置，这样就可以在gvim中简单地通过快捷键来使用cscope，而不必敲复杂的命令了。键盘映射可以从这里下载：http://cscope.sourceforge.net/cscope_maps.vim。
+﻿(4) 为了方便地使用cscope，我们还需要下载cscope的键盘映射设置，这样就可以在gvim中简单地通过快捷键来使用cscope，而不必敲复杂的命令了。键盘映射可以从这里下载：http://cscope.sourceforge.net/cscope_maps.vim。
 将下载到的cscope_maps.vim放在gvim的插件目录里，如D:\Program Files\Vim\vimfiles\plugin中。Linux用户可以放在$HOME/.vim/plugin中。
 
 1.
@@ -13,3 +13,27 @@ cscope -Rbq
 :cs f g timer_tick #查找定义
 :cs f t timer_tick #查找所有引用
 
+              使用方法：
+                     :cs find {querytype} {name}
+              其中：
+                     {querytype} 即相对应于实际的cscope行接口数字，同时也相对应于nvi命令：
+                            0或者s   —— 查找这个C符号
+                            1或者g  —— 查找这个定义
+                            2或者d  —— 查找被这个函数调用的函数（们）
+                            3或者c  —— 查找调用这个函数的函数（们）
+                            4或者t   —— 查找这个字符串
+                            6或者e  —— 查找这个egrep匹配模式
+                            7或者f   —— 查找这个文件
+                            8或者i   —— 查找#include这个文件的文件（们）
+              实例：（#号后为注释）
+                     :cscope find c ftpd_send_resp                     # 查找所有调用这个函数的函数（们）
+                     :cscope find 3 ftpd_send_resp                     # 和上面结果一样
+
+
+ kill  ：杀掉一个cscope链接（或者杀掉所有的cscope链接）
+              使用方法：
+              :cs kill {num|partial_name}
+
+
+然后，要在用的时候需要手动加载：
+cs add cscope.out
