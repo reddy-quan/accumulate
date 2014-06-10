@@ -11,7 +11,9 @@ cscope -Rbq
 :cs show #查看状态
 3.
 :cs f g timer_tick #查找定义
-:cs f t timer_tick #查找所有引用
+:cs f c timer_tick
+
+:cs f t timer_tick #查找所有引用(字符串)
 
 使用方法：
        :cs find {querytype} {name}

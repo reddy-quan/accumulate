@@ -29,7 +29,7 @@ function MyDiff()
 endfunction
 
 set nu!            "设置行号
-colorscheme elflord     "设置配色方案
+colorscheme desert     "设置配色方案
 syntax on         "语法高亮
 syntax enable        
 set nobackup        "不生成备份文件
@@ -43,3 +43,5 @@ set mouse=a        "启用鼠标
 cd F:\source\kernel        "设置文件保存路径
 "设定 windows 下 gvim 启动时最大化
 autocmd GUIEnter * simalt ~x
+"set autochdir
+set cursorline "光标行高亮
