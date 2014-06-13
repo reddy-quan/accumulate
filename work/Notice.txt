@@ -1,0 +1,2 @@
+1. change the name to nv
+2. change module to kernel, key point: in open add a flag.
