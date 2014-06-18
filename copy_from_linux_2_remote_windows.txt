@@ -32,3 +32,15 @@ set timeout 60
 expect "Proceed with installation?"
 send "Y\r"
 interact
+
+eg:
+
+echo "test001" | sudo -S mount -t cifs -o username=root,password=1234 //10.172.3.15/share_files ~/tmp/copying || echo "unable to mount remote server"
+if [ -d ~/tmp/copying/$1 ]
+then
+	echo "Copying to remote server start..."
+	echo "test001" | sudo -S cp -rf ${dirname} ~/tmp/copying/$1
+else
+	echo "Copy to remote server Dest Error, Abort!"
+fi
+echo "test001" | sudo -S umount ~/tmp/copying
