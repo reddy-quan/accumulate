@@ -1,0 +1,166 @@
+﻿1. 目前支持USB复合设备：######################################################################################################
+工作模式	接口组合	VID	PID
+Download	Diag+AT+Modem	05C6	0201
+Normal	Rndis+Mass Storage	05C6	0202
+Debug	Rndis+Diag+AT+Modem+Mass Storage+ADB	05C6	0203
+
+
+USB自定义请求指令为： c0 f1 d8 08 00 00 00 00 
+
+   发送 c0 f1 09 a0 00 00 00 00 切到Download模式
+   发送 c0 f1 09 a1 00 00 00 00 切都Normal模式
+   发送 c0 f1 09 a2 00 00 00 00 切到Debug模式
+
+ 2）通过cfg命令切口：
+
+  #cfg set usb_comp_cfg=download  // 配置为download（normal、debug）模式
+  #cfg save                       //保存设置
+  #sys_reboot                     //重启系统切口
+
+at+qfacdown=0 关闭生产下载模式
+at+qfacdown=1 打开生产下载模式
+
+
+生产工具使用Diag指令关闭该模式
+
+diag指令：send_data 75 160 00 00 00
+
+
+WIFI测试命令：######################################################################################################
+
+AR6003/AR6005 Android
+ 
+1. 以测试模式加载驱动（不同项目路径有所差异）
+MSM7x25A/7x27A Android 2.3:
+insmod /system/wifi/ar6000.ko "testmode=1"
+ 
+MDM9x15:
+echo 1 > /sys/devices/platform/msm_sdcc.2/polling
+insmod /lib/modules/3.0.21+/kernel/drivers/net/wireless/ar6000.ko "testmode=1"
+ 
+以下以MSM7x25a/7x27a Android 2.3为例,MDM9x15平台把 wlan0 改为 eth0
+
+2. 测试发送指标: 
+athtestcmd -i eth0 --tx tx99 --tgtpwr --txrate 11 --txfreq 1 
+
+其中
+txrate 的数字为物理速率(3 为 11b 11Mbps, 11 为 11g 54Mbps, 19 为 11n MCS7) 
+txfreq 的数字为信道号
+--tgtpwr 表示以默认功率发送,也可用--txpower 10 (单位dbm)指定功率,或以 --pcdac 75(范围60到90)强制以
+固定增益发送 
+
+ 
+切换速率或信道时，必须先停止发送:
+athtestcmd -i wlan0 --tx off
+athtestcmd -i eth0 --tx off
+                             
+3.  测试接收指标
+启动接收模式:
+athtestcmd -i eth0 --rx promis --rxfreq 1
+其中 rxfreq 为接收信道号
+ 
+使用测试仪器发送一定数量WIFI包
+ 
+查看设备实际收到的WIFI包数量
+athtestcmd -i wlan0 --rx report
+
+--------------
+athtestcmd -i eth0 --rx promis --rxfreq 1    
+athtestcmd -i eth0 --rx report
+
+========================================
+"etc/init.d/rcS"
+echo 1 > /sys/devices/platform/msm_sdcc.2/polling
+insmod usr/lib/modules/3.0.8+/kernel/drivers/net/wireless/ar6000.ko "testmode=1"
+
+qrt_lan_msg 42
+ps
+hostapd /usr/qrt/qrt_conf/config/hostapd-eth0.conf -B -lh
+
+
+从EBI中获取信息：######################################################################################################
+
+How to know if ramdump provided matches the vmlinux file?
+
+
+Vmlinux and ramdump(ebi0) has string "Linux version" which should be same in both of them.
+You can Check quickly as follows:
+
+1) #strings ebi0.bin | grep "Linux version"
+2) #strings vmlinux | grep "Linux version"
+
+The output of 1) & 2) should match to same.
+
+
+在EBI1.BIN中搜索 "ERR crash log report"
+
+strings EBI1.BIN | grep "^<.*>\[." > crash.log
+
+
+
+strings EBI1.BIN | grep "^<[0-9]+>\[[\s]*[0-9]+" > crash.log
+
+
+#匹配数字版：
+strings EBI1.BIN | grep "^<[0-9]>\[[\s]\{0,10\}" > crash.log
+
+打印模板：
+printk("%s line %d\n", __func__, __LINE__);
+
+send_data 58
+此操作会导致：
+<2>[   68.942347] diag: download mode set, Rebooting SoC..
+
+<0>[   68.951594] Restarting system.
+
+<5>[   68.956569] Going down for restart now
+
+
+send_data 75 37 03 00
+此操作会导致：
+modem侧出现error injection,死机
+
+
+
+T32参考操作：######################################################################################################
+
+On T32 simulator Command window execute step by step below:
+sys.u
+- Load Binary from your dump location eg:
+B::D.LOAD.B C:\00580304\EBICS0.BIN 0x80000000 /noclear
+ 
+- Load customer ELF:
+B::D.LOAD.elf C:\00580304\M8960AAAAAANAZQ1005.elf /nocode /noclear
+ 
+- Configure Task config 
+B::task.config \modem_proc\core\kernel\blast\osam\bin\T32\v4\Blast_model.t32
+- Configure Menu
+B::MENU.reprogram \modem_proc\core\kernel\blast\osam\bin\T32\v4\blast_model.men
+
+从这里开始： 查看变量coredump
+############# QJ 操作步骤 #############
+Remember: 需要将elf文件放置到ms目录下
+
+cd F:\source\common\tools\cmm\9x15\modem
+do std_loadsim_modem.cmm D:\CRASHLOG\SIJI3 D:\CRASHLOG
+
+cd F:\source\common\tools\cmm\9x15\modem
+do std_loadsim_modem.cmm D:\dump1 D:\CRASHLOG\modem_proc
+symbol.sourcepath.setrecursedir D:\CRASHLOG\modem_proc    #在此目录下递归查找
+
+Linux侧：
+sys.u
+cd D:\CRASHLOG\20140310dxsiji1
+d.load.binary EBI1.BIN 0x40000000
+d.load.elf vmlinux /nocode 
+
+
+sys.u
+cd D:\CRASHLOG\AAAA
+d.load.binary EBI1.BIN 0x40000000
+d.load.elf vmlinux /nocode 
+
+
+80-N5576-8
+
+
