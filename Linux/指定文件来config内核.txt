@@ -1,2 +1,2 @@
-make menuconfig ARCH=arm sun4i_crane_defconfig
+make menuconfig ARCH=arm sun7i_defconfig
 
