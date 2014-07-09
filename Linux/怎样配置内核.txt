@@ -1,0 +1,32 @@
+说起配置内核大家可能会想不就是make menuconfig吗？
+
+这样说，也算对，但针对我们做嵌入式开发的，这种配置方法很有误导性。
+
+首先要知道，make menuconfig后，到底发生了什么？
+
+此时，脚本会在当前路径下找.config文件：
+如果找到.config：
+	就打开它进入正常的内核配置界面。
+
+如果没有找到.config：
+	1.判断当前正在使用的系统的架构（对我们来说肯定都是X86了）
+	2.然后从arch/x86/configs目录下拷贝i386_defconfig或x86_64_defconfig（64位）
+	3.打开配置文件，进入配置界面
+	
+在上面的2种情况下，当用户配置完并保存后，会在当前目录下生成新的.config文件
+如果原来就有.config则备份其为.config.old
+
+看到了没？
+在没有.config的情况下（实际上新下载的代码都是没有这个的，此文件是经过一次编译或配置后才生成的），
+如果想针对arm配置内核，直接使用make menuconfig默认会使用x86的defconfig，这无疑是错误的。
+
+这个问题要如何解决呢？
+实际上，Linux内核源码针对每一种架构的每一种芯片都是有默认的config。
+
+例如9x15芯片使用的是arch/arm/configs/msm9615_defconfig
+分析：首先它是arm架构，则它的默认配置肯定是在arch/arm/configs目录下，至于具体名称一般都会与芯片有关联。
+当理解了这个以后，
+那么，要配置9x15的内核，就简单多了：
+make menuconfig arch=ARM msm9615_defconfig
+
+此时，脚本会从arch/arm/configs目录下寻找名称为msm9615_defconfig的文件，并载入它的默认值，进入内核配置界面。
